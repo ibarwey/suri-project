@@ -1,0 +1,77 @@
+/* Style the Image Used to Trigger the Modal */
+#myImg {
+    padding-top: 30px;
+  }
+
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+  }
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.mainContainer{
+    background-color: #F5F5F5;
+    padding: .5rem 1rem;
+    margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3rem;
+    border: 1px solid transparent;
+    border-radius: 1.25rem;
+    width: 90%;
+}
+
+#text {
+    padding: 5px;
+}
+
+#slider-simple{
+    margin-left: 5rem;
+
+}
+
+.slider text{
+    font-size: 16px;
+    color: black;
+}
+
+#slider-simple text{
+    text-align: center;
+    font-size: 16px;
+    color: black;
+}
+
+#value-simple{
+
+}
+
+
+span {
+    display: inline-block ;
+}
+
+.img-with-text {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 500;
+
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
