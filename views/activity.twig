@@ -1,0 +1,112 @@
+<meta charset="utf-8">
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://unpkg.com/d3-simple-slider"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.css">
+
+    <script type="text/javascript" src="/javascripts/loadactivity.js"></script>
+
+    <link rel="stylesheet" href="/stylesheets/activity.scss">
+</head>
+
+<body style="font-size: 18px;">
+<div class="activitypage">
+    <div class="container text-center mt-6">
+        <div class="d-flex justify-content-center py-2" id="userID">UserID:
+            <div name="userID" style="display:inline" id="userID">{{ userID }}</div>
+        </div>
+        <h1 class="py-2">Exercise {{ sequence }} of 30</h1>
+
+        <p class="py-2 text-danger" id="errorText1"> {{ error }} </p>
+        <!---<p><b>Can you find one of the objects in the Top View image?</b></p>-->
+
+        <img id="img2find" style="visibility:hidden;">
+
+
+        <p class="text-danger">Time remaining: <span id="time"> 00:{{ time }}</span></p>
+
+        <div class="container mainContainer">
+                <div class="img-with-text">
+                    <canvas id="canvas"></canvas>
+                </div>
+
+                <div class="col-sm answeractivity">
+
+                    <br>
+                    <p>Do you see the pickaxe in the above image?</p>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-secondary" >
+                            <input type="radio" id="option11" name="q1" autocomplete="off"> Yes
+                        </label>
+                        <label class="btn btn-secondary" >
+                            <input type="radio" id="option12" name="q1" autocomplete="off"> No
+                        </label>
+                    </div>
+                    <div id="popup" style="color: blue;"> </div>
+
+                    <p id="value-simple" style="visibility: hidden;"></p>
+                    <p>Please rate your confidence in your answer.</p>
+                    <div id="slider-simple"></div>
+
+                    <br>
+
+                    <form id="subForm" action="/activity/{{ userID }}/" method="POST">
+                        <p class="py-2 text-danger" id="errorText2"> {{ error }} </p>
+                        <input type="submit" class="btn btn-outline-success" id="submitButton" value="Submit">
+                    </form>
+                </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    var duration = '{{ time }}'
+    duration = duration - 1
+    var userID = '{{ userID }}';
+    var question = '{{ question }}';
+    display = document.querySelector('#time')
+    capText = document.getElementById("caption");
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var imgWidth = 500;
+    var imgHeight = 500;
+    ctx.canvas.width = imgWidth;
+    ctx.canvas.height = imgHeight;
+    var rect = {}; // Properties: startX, startY, w, h
+    rect.startX = null;
+    rect.startY = null;
+    rect.w = null;
+    rect.h = null;
+    var drag = false;
+    var imageObj = null;
+    window.onload = function () {
+        if (duration <= 0) {
+            document.getElementById("popup").innerText = "";
+            duration = 1
+            renderQuestion(userID, question, duration);
+        } else {
+            renderQuestion(userID, question, duration);
+            startTimer(duration, display, capText, userID);
+            trackMouse(duration,e);
+        }
+    }
+</script>
+
+</body>
+</html>
