@@ -5,13 +5,13 @@ var assert = require('assert');
 const co = require('co');
 const User = require('../User');
 const { response } = require('express');
-var url = 'mongodb://localhost:27017/'; //for server tests
+var url = 'mongodb://0.0.0.0:27017/'; //for server tests
 //var url = 'mongodb://localhost:27014/'; //for local tests
 
 var datab = 'InternalTest'
 var userID = null
 let users = [];
-var totalQs = 30;
+var totalQs = 50;
 //get user instance function
 let getUserInstance = uid => users.find(user => user.id === uid);
 //snooze function
@@ -52,16 +52,16 @@ router.post('/activity/', function(req,res,next){
    let usersCol = db.collection('users')
    check = yield usersCol.findOne({"user" : currentUser.id})
 
+
    //check to see if user exists in database
    if(check != null && currentUser.id != null){
 
      res.render('activity', {time: 30, userID: currentUser.id, question: questionNum, sequence: currentUser.index})
 
-    }
-    else{
-      //res.render('index', {error: "ERROR: Cannot participate"})
-      res.render('activity', {time: 30, userID: currentUser.id, question: questionNum, sequence: currentUser.index})
-    }
+   }
+   else{
+     res.render('activity', {time: 30, userID: currentUser.id, question: questionNum, sequence: currentUser.index})
+   }
 
   });
 });
@@ -119,7 +119,7 @@ questionNum = currentUser.selectQuestion()
       }
       else{
         //change Ground Truth Array
-        var truth = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1] //30 in length
+        groundtruth = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ,1,1,1,1,1,1,1, 2,2,2,2, 3,3,3,3, 4,4,4,4,4,4,4, 5,5, 6] //25 none, 7 gun, 4 knife, 4 wrench, 7 pliers, 2 scissors, 1 hammer
         var correct = []
 
 

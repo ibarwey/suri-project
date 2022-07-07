@@ -41,8 +41,9 @@
         <p class="text-danger">Time remaining: <span id="time"> 00:{{ time }}</span></p>
 
         <div class="container mainContainer">
-                <div class="img-with-text">
-                    <canvas id="canvas"></canvas>
+                <div class='images-row'>
+                    <canvas class="img-with-text" id="canvas"></canvas>
+                    <canvas class="img-for-zoom" id="zoomed"></canvas>
                 </div>
 
                 <div class="col-sm answeractivity">
@@ -51,29 +52,29 @@
                     <p>Please select which object you believe to be in the image.</p>
                     <p>If there is no target object in the image, select NONE.</p>
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-secondary" >
-                            <input type="radio" id="option10" name="q1" autocomplete="off"> NONE
-                        </label>
-                        <label class="btn btn-secondary" >
+                        <label class="btn btn-secondary mr-1 rounded" >
                             <input type="radio" id="option11" name="q1" autocomplete="off"> Gun
                         </label>
-                        <label class="btn btn-secondary" >
+                        <label class="btn btn-secondary mr-1 rounded" >
                             <input type="radio" id="option12" name="q1" autocomplete="off"> Knife
                         </label>
-                        <label class="btn btn-secondary" >
+                        <label class="btn btn-secondary mr-1 rounded" >
                             <input type="radio" id="option13" name="q1" autocomplete="off"> Wrench
                         </label>
-                        <label class="btn btn-secondary" >
+                        <label class="btn btn-secondary mr-1 rounded" >
                             <input type="radio" id="option14" name="q1" autocomplete="off"> Pliers
                         </label>
-                        <label class="btn btn-secondary" >
+                        <label class="btn btn-secondary mr-1 rounded" >
                             <input type="radio" id="option15" name="q1" autocomplete="off"> Scissors
                         </label>
-                        <label class="btn btn-secondary" >
+                        <label class="btn btn-secondary mr-1 rounded" >
                             <input type="radio" id="option16" name="q1" autocomplete="off"> Hammer
                         </label>
+                        <label class="btn btn-secondary ml-4 rounded" >
+                            <input type="radio" id="option10" name="q1" autocomplete="off"> NONE
+                        </label>
                     </div>
-                    <div id="popup" style="color: blue;"> </div>
+                    <div id="popup" style="color: blue;"></div>
 
                     <br>
 
@@ -96,10 +97,14 @@
     capText = document.getElementById("caption");
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
+    var zoomcanvas = document.getElementById('zoomed');
+    var zoomctx = zoomcanvas.getContext('2d');
     var imgWidth = 500;
     var imgHeight = 500;
     ctx.canvas.width = imgWidth;
     ctx.canvas.height = imgHeight;
+    zoomctx.canvas.width = imgWidth;
+    zoomctx.canvas.height = imgHeight;
     var rect = {}; // Properties: startX, startY, w, h
     rect.startX = null;
     rect.startY = null;
@@ -107,6 +112,18 @@
     rect.h = null;
     var drag = false;
     var imageObj = null;
+
+    // Popup text when "Yes" selected
+    var yesButon = document.getElementById("option10");
+    var noButton = document.getElementById("option12");
+    yesButon.onclick = function (){
+        document.getElementById("popup").innerText = "Please draw a bounding box on the image around the pickaxe.";
+    }
+    noButton.onclick = function () {
+        document.getElementById("popup").innerText = "";
+        document.getElementById("output").innerText = "";
+    }
+
     window.onload = function () {
         if (duration <= 0) {
             document.getElementById("popup").innerText = "";

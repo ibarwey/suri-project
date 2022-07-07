@@ -14,16 +14,50 @@ function drawCanvas(imageSource) {
     canvas.addEventListener('mousemove', function(e){trackMouse(duration,e)}, false);
 }
 
+//BOUNDING BOX
+function mouseDown(e) {
+  rect.startX = e.offsetX;
+  rect.startY = e.offsetY;
+  drag = true;
+  document.getElementById('popup').style.visibility = "hidden";
+}
+
+function mouseUp() {
+    drag = false;
+}
+
+function mouseMove(e) {
+  mousex = e.offsetX;
+  mousey = e.offsetY;
+
+  if(drag){
+      ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
+      ctx.drawImage(imageObj, 0, 0, imgWidth, imgHeight);
+      ctx.beginPath();
+      rect.w = mousex - rect.startX;
+      rect.h = mousey - rect.startY;
+      ctx.strokeStyle = 'red';
+      ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
+      ctx.closePath();
+  }
+    //Output
+    $('#output').html('current: ' + mousex + ', ' + mousey + '<br/>last: ' + rect.startX + ', ' + rect.startY + '<br>height: ' + rect.h + ', width: ' + rect.w + '<br/>' + '<br/>mousedown: ' + drag + '<br>offset: ' + this.offsetLeft + ', ' + this.offsetTop + '</br>');
+}
+
 //MOUSE TRACKING
 mouseArray = [];
 var timeChange2 = setInterval(function() {duration = Math.round((duration - .1) * 10) / 10}, 100);
 
 function trackMouse(duration,e) {
   mouseArray.push([duration,e.offsetX,e.offsetY]);
+
+  zoomctx.drawImage(imageObj, e.offsetX, e.offsetY, 100, 100, 0, 0, imgWidth, imgHeight)
 }
 
 function renderQuestion(userID, sequence, duration) {
-    exercise_img_src = "/images/5_1_1-Images/img-" + sequence + ".png";
+    //exercise_img_src = "/images/4_1_4_Images/ray-" + sequence + ".png";
+    exercise_img_src = "/images/4_1_4_Images/ray-1.png";
+
     obj_img = "/images/objects/targetobjects.png";
 
     if (duration > 0) {
@@ -106,6 +140,12 @@ d3.select('div#slider-simple')
 
         if (option10.checked){
             q1[0] = 0;
+            rect.X = null
+            rect.Y = null
+            rect.w = null
+            rect.h = null
+
+            document.getElementById("popup").innerText = "";
         }
         else if (option11.checked){
             q1[0] = 1;
@@ -126,30 +166,27 @@ d3.select('div#slider-simple')
             q1[0] = 6;
         }
 
-
-
         console.log(q1)
 
         //
         //Question 2
         //
 
-
-        q2 = document.getElementById("value-simple").innerHTML
-        console.log(q2)
-
-        sendData(userID, timeLeft, q1, q2, mouseArray);
+        sendData(userID, timeLeft, q1, rect, mouseArray);
 
     })
 }
 
 
-function sendData(userID, time, q1, q2, array) {
+function sendData(userID, time, q1, q2, bb, array) {
     console.log("sending data")
 
     url2go = userID + "/data"
     data2send = [time, q1, q2, array]
-    console.log("time: " + time + " q1: " + q1 +" array: " + array);
+    console.log("time: " + time +
+                " q1: " + q1 +
+                " boundingBox: {" + bb.startX + ", " + bb.startX + ", " + bb.w + ", " + bb.h + "}" +
+                " mousearray: {" + array + "}");
 
     //add ajax function
     new Promise((resolve, reject) => {
