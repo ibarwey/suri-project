@@ -94,15 +94,39 @@ d3.select('div#slider-simple')
         //Question 1
         //
 
+        var radio10 = document.getElementById('option10')
         var radio11 = document.getElementById('option11')
         var radio12 = document.getElementById('option12')
+        var radio13 = document.getElementById('option13')
+        var radio14 = document.getElementById('option14')
+        var radio15 = document.getElementById('option15')
+        var radio16 = document.getElementById('option16')
 
-        if (option11.checked){
-            q1[0] = 1;
-        }
-        else{
+
+
+        if (option10.checked){
             q1[0] = 0;
         }
+        else if (option11.checked){
+            q1[0] = 1;
+        }
+        else if (option12.checked){
+            q1[0] = 2;
+        }
+        else if (option13.checked){
+            q1[0] = 3;
+        }
+        else if (option14.checked){
+            q1[0] = 4;
+        }
+        else if (option15.checked){
+            q1[0] = 5;
+        }
+        else if (option16.checked){
+            q1[0] = 6;
+        }
+
+
 
         console.log(q1)
 
@@ -125,7 +149,7 @@ function sendData(userID, time, q1, q2, array) {
 
     url2go = userID + "/data"
     data2send = [time, q1, q2, array]
-    console.log("time: " + time + " q1: " + q1 + "q2: " + q2 + " array: " + array);
+    console.log("time: " + time + " q1: " + q1 +" array: " + array);
 
     //add ajax function
     new Promise((resolve, reject) => {
@@ -143,13 +167,7 @@ function startTimer(duration, display, captionText, userID) {
     var timer = duration, minutes, seconds;
     var timeChange = setInterval(function () {
         if (--timer < 0) {
-            //document.getElementById("submitButton").style.visibility = "hidden";
-            //document.getElementById("errorText1").innerHTML = "Time is out! Changing to next question...";
-            //document.getElementById("errorText2").innerHTML = "Time is out! Changing to next question...";
-
             clearInterval(timeChange)
-
-            //setTimeout(sendFunc, 1000)
             document.getElementById("canvas").style.visibility = "hidden";
             document.getElementById("imgText").innerHTML = "Times up! Submit your answer.";
             display.textContent = " 00:00";

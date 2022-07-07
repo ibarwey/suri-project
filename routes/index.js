@@ -59,7 +59,8 @@ router.post('/activity/', function(req,res,next){
 
     }
     else{
-      res.render('index', {error: "ERROR: Cannot participate"})
+      //res.render('index', {error: "ERROR: Cannot participate"})
+      res.render('activity', {time: 30, userID: currentUser.id, question: questionNum, sequence: currentUser.index})
     }
 
   });

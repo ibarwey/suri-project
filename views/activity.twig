@@ -30,7 +30,7 @@
         <div class="d-flex justify-content-center py-2" id="userID">UserID:
             <div name="userID" style="display:inline" id="userID">{{ userID }}</div>
         </div>
-        <h1 class="py-2">Exercise {{ sequence }} of 30</h1>
+        <h1 class="py-2">Exercise {{ sequence }} of 50</h1>
 
         <p class="py-2 text-danger" id="errorText1"> {{ error }} </p>
         <!---<p><b>Can you find one of the objects in the Top View image?</b></p>-->
@@ -48,20 +48,32 @@
                 <div class="col-sm answeractivity">
 
                     <br>
-                    <p>Do you see the pickaxe in the above image?</p>
+                    <p>Please select which object you believe to be in the image.</p>
+                    <p>If there is no target object in the image, select NONE.</p>
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
                         <label class="btn btn-secondary" >
-                            <input type="radio" id="option11" name="q1" autocomplete="off"> Yes
+                            <input type="radio" id="option10" name="q1" autocomplete="off"> NONE
                         </label>
                         <label class="btn btn-secondary" >
-                            <input type="radio" id="option12" name="q1" autocomplete="off"> No
+                            <input type="radio" id="option11" name="q1" autocomplete="off"> Gun
+                        </label>
+                        <label class="btn btn-secondary" >
+                            <input type="radio" id="option12" name="q1" autocomplete="off"> Knife
+                        </label>
+                        <label class="btn btn-secondary" >
+                            <input type="radio" id="option13" name="q1" autocomplete="off"> Wrench
+                        </label>
+                        <label class="btn btn-secondary" >
+                            <input type="radio" id="option14" name="q1" autocomplete="off"> Pliers
+                        </label>
+                        <label class="btn btn-secondary" >
+                            <input type="radio" id="option15" name="q1" autocomplete="off"> Scissors
+                        </label>
+                        <label class="btn btn-secondary" >
+                            <input type="radio" id="option16" name="q1" autocomplete="off"> Hammer
                         </label>
                     </div>
                     <div id="popup" style="color: blue;"> </div>
-
-                    <p id="value-simple" style="visibility: hidden;"></p>
-                    <p>Please rate your confidence in your answer.</p>
-                    <div id="slider-simple"></div>
 
                     <br>
 

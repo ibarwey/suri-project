@@ -24,7 +24,7 @@ with open('08-05-2021Test4_3_1.json') as f:
     data = json.load(f)
 
 #specify ground truth for each question
-groundtruth = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1] #length 30
+groundtruth = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ,1,1,1,1,1,1,1, 2,2,2,2, 3,3,3,3, 4,4,4,4,4,4,4, 5,5, 6] #25 none, 7 gun, 4 knife, 4 wrench, 7 pliers, 2 scissors, 1 hammer
 
 
 for user in usersCol.find():
