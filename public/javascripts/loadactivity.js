@@ -56,7 +56,7 @@ function trackMouse(duration,e) {
 
 function renderQuestion(userID, sequence, duration) {
     //exercise_img_src = "/images/4_1_4_Images/ray-" + sequence + ".png";
-    exercise_img_src = "/images/4_1_4_Images/ray-1.png";
+    exercise_img_src = "/images/6ray/N0000001.jpg";
 
     obj_img = "/images/objects/targetobjects.png";
 
