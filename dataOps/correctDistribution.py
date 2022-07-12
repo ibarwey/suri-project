@@ -13,7 +13,7 @@ correctDist = []
 #iterate through users
 for i in range(len(data)):
     correct = 0
-    for j in range(1,31):
+    for j in range(1,51):
         response = data[i][str(j)]
         useRes = response["q1"]
         if useRes == groundtruth[j-1]:

@@ -31,7 +31,8 @@ for user in usersCol.find():
 
     responses = [] #for all qs
     answers_q1 = [] #for q1
-    answers_q2 = [] #for q2
+    boundingBox = [] #for bb
+    mouseArray = [] #for mouse track
     time = []
 
     key2pay = user["key2pay"] #surveyCode
@@ -59,9 +60,8 @@ for user in usersCol.find():
                     for userResponse in data:
                         response = userResponse[str(i + 1)]
                         answers_q1.append(response["q1"])
-                        answers_q2.append(response["q2"])
-                        answers_q3.append(response["q3"])
-                        answers_q4.append(response["q4"])
+                        boundingBox.append(response["boundingBox"])
+                        mouseArray.append(response["mouseArray"])
                         time.append(response["time"])
 
                 flag = False;

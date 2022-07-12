@@ -23,18 +23,17 @@ for user in usersCol.find():
 
     userName = user['user']
     print(userName)
-    demographic = user["surveyResults"]
 
     userResponse["name"] = userName
-    userResponse["demographic"] = demographic
 
-    for i in range(1,31):
+    for i in range(1,51):
         print(i," = LOOP ENTERED")
         response = responsesCol.find_one({"user": userName, "question": i})
         userResponse[i] = {
+            "time": response["time"],
             "q1": response["q1"],
-            "q2": response["q2"],
-            "time": response["time"]
+            "boundingBox": response["boundingBox"],
+            "mouseArray": response["mouseArray"]
         }
 
     dataArray.append(userResponse)

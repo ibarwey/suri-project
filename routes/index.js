@@ -9,7 +9,7 @@ var url = 'mongodb://0.0.0.0:27017/'; //for server tests
 //var url = 'mongodb://localhost:27014/'; //for local tests
 
 var datab = 'InternalTest'
-var userID = null
+var userID = null;
 let users = [];
 var totalQs = 50;
 //get user instance function
@@ -47,22 +47,19 @@ router.post('/activity/', function(req,res,next){
 
  co(function* () {
 
-   let client = yield MongoClient.connect(url);
+   let client = yield MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
    var db = client.db(datab)
    let usersCol = db.collection('users')
    check = yield usersCol.findOne({"user" : currentUser.id})
 
    //check to see if user exists in database
    if(check != null && currentUser.id != null){
-
      res.render('index', {error: "ERROR: Already completed activity!"})
-
-   }
-   else{
+   }else{
      res.render('activity', {time: 30, userID: currentUser.id, question: questionNum, sequence: currentUser.index})
    }
 
-  });
+ });
 });
 
 
@@ -80,7 +77,7 @@ router.post('/activity/:userID/', function(req,res,next){
 
   //Fetch current user
   let currentUser = getUserInstance(req.params.userID);
-  prevTime = currentUser.getPrevTime()
+  prevTime = currentUser.getPrevTime();
 
 
   //check to ensure previous response was posted
@@ -95,14 +92,18 @@ router.post('/activity/:userID/', function(req,res,next){
     let responseCol = db.collection('responses')
     let usersCol = db.collection('users')
 
-
     check = yield responseCol.findOne({"user" : currentUser.id, "question" : currentUser.currentQ()})
-
 
     if (check == null){
 
 
-      res.render('activity', {time: prevTime -1, userID: currentUser.id, question: currentUser.currentQ(), sequence: currentUser.index, error: "ERROR: Please answer all questions!"})
+      res.render('activity',
+                  {time: prevTime -1,
+                    userID: currentUser.id,
+                    question: currentUser.currentQ(),
+                    sequence: currentUser.index,
+                    error: "ERROR: Please answer all questions!"
+      })
 
 
     }else{
@@ -178,10 +179,6 @@ router.post('/activity/:userID/', function(req,res,next){
 //
 
 
-
-
-
-
 router.post('/activity/:userID/data', function(req,res,next){
 
 
@@ -212,7 +209,7 @@ router.post('/activity/:userID/data', function(req,res,next){
   co(function* () {
 
 
-    let client = yield MongoClient.connect(url);
+    let client = yield MongoClient.connect(url,{ useNewUrlParser: true, useUnifiedTopology: true });
     const db = client.db(datab)
     let responseCol = db.collection('responses')
 
@@ -227,7 +224,7 @@ router.post('/activity/:userID/data', function(req,res,next){
       "time": time,
       "q1": group[1],
       "boundingBox": group[2],
-      "mouseArray" : gorup[3]
+      "mouseArray" : group[3]
     };
 
 
@@ -265,11 +262,6 @@ router.post('/activity/:use/:userID/data', function(req,res,next){
   group = JSON.parse(group)
 
 
-  group[2] = group[2].substring(0, group[2].length - 1);
-  group[2] = parseInt(group[2])
-  console.log(group)
-
-
   TimeLeft = group[0]
   currentUser.setPrevTime(TimeLeft)
   time = 30 - TimeLeft
@@ -283,7 +275,7 @@ router.post('/activity/:use/:userID/data', function(req,res,next){
   co(function* () {
 
 
-    let client = yield MongoClient.connect(url);
+    let client = yield MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
     const db = client.db(datab)
     let responseCol = db.collection('responses')
 
@@ -293,8 +285,8 @@ router.post('/activity/:use/:userID/data', function(req,res,next){
       "question": question,
       "time": time,
       "q1": group[1],
-      "q2": group[2]
-
+      "boundingBox" : group[2],
+      "mouseArray" : group[3]
 
     };
 
@@ -317,78 +309,6 @@ router.post('/activity/:use/:userID/data', function(req,res,next){
 
 
 });
-
-
-
-
-//
-//Load survey page
-//
-
-
-
-
-router.post('/survey/:userID', function(req,res,next){
-
-
-  //Fetch current user
-  let currentUser = getUserInstance(req.params.userID);
-  res.render('survey', {userID: currentUser.id})
-
-
-});
-
-
-
-
-
-
-
-
-
-
-
-
-//
-//Store survery response
-//
-
-
-
-
-router.post('/survey/:user/:userID/sendSurvey', function(req,res,next){
-
-
-  //collect variables from front end
-  userID = req.params.userID;
-  key = req.body.key;
-  userDemographic = req.body.userDemographic;
-  userDemographic = JSON.parse(userDemographic);
-
-
-  //storesurvey results
-  co(function* () {
-    let client = yield MongoClient.connect(url);
-    const db = client.db(datab)
-    let UsersCol = db.collection('users')
-
-
-    newItem = {
-        "surveyResults": userDemographic,
-        "key2pay": key
-    }
-
-
-    UsersCol.updateOne({"user": userID}, { $set: newItem });
-    console.log('User Completed task')
-})
-
-
-  //give a response to load next page
-  res.send("{}");
-
-
-})
 
 
 module.exports = router;

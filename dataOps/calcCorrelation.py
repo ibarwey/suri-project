@@ -14,7 +14,7 @@ groundtruth = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 times = []
 correctAnswer = []
 
-for i in range(1,31):
+for i in range(1,51):
 
     for userResponse in data:
         response = userResponse[str(i)]

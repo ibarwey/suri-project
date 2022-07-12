@@ -12,6 +12,9 @@ function drawCanvas(imageSource) {
     };
     imageObj.src = imageSource;
     canvas.addEventListener('mousemove', function(e){trackMouse(duration,e)}, false);
+    canvas.addEventListener('mousedown', mouseDown, false);
+    canvas.addEventListener('mouseup', mouseUp, false);
+    canvas.addEventListener('mousemove', mouseMove, false);
 }
 
 //BOUNDING BOX
@@ -19,7 +22,6 @@ function mouseDown(e) {
   rect.startX = e.offsetX;
   rect.startY = e.offsetY;
   drag = true;
-  document.getElementById('popup').style.visibility = "hidden";
 }
 
 function mouseUp() {
@@ -40,6 +42,7 @@ function mouseMove(e) {
       ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
       ctx.closePath();
   }
+
     //Output
     $('#output').html('current: ' + mousex + ', ' + mousey + '<br/>last: ' + rect.startX + ', ' + rect.startY + '<br>height: ' + rect.h + ', width: ' + rect.w + '<br/>' + '<br/>mousedown: ' + drag + '<br>offset: ' + this.offsetLeft + ', ' + this.offsetTop + '</br>');
 }
@@ -55,7 +58,7 @@ function trackMouse(duration,e) {
 }
 
 function renderQuestion(userID, sequence, duration) {
-    exercise_img_src = "/images/6ray/" + sequence + ".jpg";
+    exercise_img_src = "/images/sixray/" + sequence + ".jpg";
 
     obj_img = "/images/objects/targetobjects.png";
 
@@ -74,44 +77,12 @@ function renderQuestion(userID, sequence, duration) {
 
     var w = window.innerWidth;
 
-    var formatter = d3.format("");
-    var tickFormatter = function(d) {
-      return formatter(d) + "%";
-    }
-
-    let sliderWidth = d3.select('#slider-simple').node().offsetWidth
-
-
-var sliderSimple = d3
-    .sliderHorizontal()
-    .min(0)
-    .max(100)
-    .width(sliderWidth/1.2)
-    .tickFormat(tickFormatter)
-    .ticks(9)
-    .step(10)
-    .default(50)
-    .on('onchange', val => {
-        d3.select('p#value-simple').text(d3.format('.0%')(val));
-    });
-
-d3.select('div#slider-simple')
-    .append('svg')
-    .attr('width', sliderWidth)
-    .attr('height', 90)
-    .append('g')
-    .attr('transform', 'translate(30,30)')
-    .call(sliderSimple);
-
-      d3.select('p#value-simple').text(d3.format('.0%')(sliderSimple.value()));
-
     //
     //Button
     //
     d3.select(".btn-outline-success").on("click", function () {
       console.log("BUTTON PRESSED");
         var q1 = [];
-        var q2
 
         //
         //Get time
@@ -127,17 +98,17 @@ d3.select('div#slider-simple')
         //Question 1
         //
 
-        var radio10 = document.getElementById('option10')
-        var radio11 = document.getElementById('option11')
-        var radio12 = document.getElementById('option12')
-        var radio13 = document.getElementById('option13')
-        var radio14 = document.getElementById('option14')
-        var radio15 = document.getElementById('option15')
-        var radio16 = document.getElementById('option16')
+        var radio00 = document.getElementById('00')
+        var radio01 = document.getElementById('01')
+        var radio02 = document.getElementById('02')
+        var radio03 = document.getElementById('03')
+        var radio04 = document.getElementById('04')
+        var radio05 = document.getElementById('05')
+        var radio06 = document.getElementById('06')
 
 
 
-        if (option10.checked){
+        if (radio00.checked){
             q1[0] = 0;
             rect.X = null
             rect.Y = null
@@ -147,30 +118,25 @@ d3.select('div#slider-simple')
             document.getElementById("popup").innerText = "";
 
         }
-        else if (option11.checked){
+        else if (radio01.checked){
             q1[0] = 1;
         }
-        else if (option12.checked){
+        else if (radio02.checked){
             q1[0] = 2;
         }
-        else if (option13.checked){
+        else if (radio03.checked){
             q1[0] = 3;
         }
-        else if (option14.checked){
+        else if (radio04.checked){
             q1[0] = 4;
         }
-        else if (option15.checked){
+        else if (radio05.checked){
             q1[0] = 5;
         }
-        else if (option16.checked){
+        else if (radio06.checked){
             q1[0] = 6;
         }
-
         console.log(q1)
-
-        //
-        //Question 2
-        //
 
         sendData(userID, timeLeft, q1, rect, mouseArray);
 
@@ -178,15 +144,15 @@ d3.select('div#slider-simple')
 }
 
 
-function sendData(userID, time, q1, q2, bb, array) {
+function sendData(userID, time, q1, bb, array) {
     console.log("sending data")
 
     url2go = userID + "/data"
-    data2send = [time, q1, q2, array]
+    data2send = [time, q1, bb, array]
     console.log("time: " + time +
                 " q1: " + q1 +
                 " boundingBox: {" + bb.startX + ", " + bb.startX + ", " + bb.w + ", " + bb.h + "}" +
-                " mousearray: {" + array + "}");
+                " mouseArray: {" + array + "}");
 
     //add ajax function
     new Promise((resolve, reject) => {
@@ -211,16 +177,13 @@ function startTimer(duration, display, captionText, userID) {
 
             return
         } else {
-            minutes = parseInt(timer / 60, 10)
+            minutes=0;
             seconds = parseInt(timer % 60, 10);
-            minutes = minutes < 10 ? "0" + minutes : minutes;
             seconds = seconds < 10 ? "0" + seconds : seconds;
-            display.textContent = minutes + ":" + seconds;
-            captionText.innerHTML = "Time remaning: " + timeText;
-            timeText = minutes + ":" + seconds;
+            display.textContent = "0:" + seconds;
+            captionText.innerHTML = "Time remaining is " + timeText;
+            timeText = "0:" + seconds;
         }
 
     }, 1000);
-
-
 }
