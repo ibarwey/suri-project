@@ -52,11 +52,10 @@ router.post('/activity/', function(req,res,next){
    let usersCol = db.collection('users')
    check = yield usersCol.findOne({"user" : currentUser.id})
 
-
    //check to see if user exists in database
    if(check != null && currentUser.id != null){
 
-     res.render('activity', {time: 30, userID: currentUser.id, question: questionNum, sequence: currentUser.index})
+     res.render('index', {error: "ERROR: Already completed activity!"})
 
    }
    else{
@@ -110,7 +109,7 @@ router.post('/activity/:userID/', function(req,res,next){
 
 
       currentUser.nextquestion()
-questionNum = currentUser.selectQuestion()
+      questionNum = currentUser.selectQuestion()
 
 
       if (currentUser.index <= totalQs){
@@ -119,8 +118,7 @@ questionNum = currentUser.selectQuestion()
       }
       else{
         //change Ground Truth Array
-        groundtruth = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ,1,1,1,1,1,1,1, 2,2,2,2, 3,3,3,3, 4,4,4,4,4,4,4, 5,5, 6] //25 none, 7 gun, 4 knife, 4 wrench, 7 pliers, 2 scissors, 1 hammer
-        var correct = []
+          var correct = []
 
 
         //get results
@@ -198,11 +196,7 @@ router.post('/activity/:userID/data', function(req,res,next){
 
   let group = Object.keys(req.body)
   group = JSON.parse(group)
-
-
-  group[2] = group[2].substring(0, group[2].length - 1);
-  group[2] = parseInt(group[2])
-console.log(group)
+  console.log(group)
 
 
   TimeLeft = group[0]
@@ -232,7 +226,8 @@ console.log(group)
       "question": question,
       "time": time,
       "q1": group[1],
-      "q2": group[2]
+      "boundingBox": group[2],
+      "mouseArray" : gorup[3]
     };
 
 

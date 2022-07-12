@@ -55,8 +55,7 @@ function trackMouse(duration,e) {
 }
 
 function renderQuestion(userID, sequence, duration) {
-    //exercise_img_src = "/images/4_1_4_Images/ray-" + sequence + ".png";
-    exercise_img_src = "/images/6ray/N0000001.jpg";
+    exercise_img_src = "/images/6ray/" + sequence + ".jpg";
 
     obj_img = "/images/objects/targetobjects.png";
 
@@ -146,6 +145,7 @@ d3.select('div#slider-simple')
             rect.h = null
 
             document.getElementById("popup").innerText = "";
+
         }
         else if (option11.checked){
             q1[0] = 1;

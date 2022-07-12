@@ -178,8 +178,7 @@ with open('08-05-2021Test4_3_1.json') as f:
     data = json.load(f)
 
 #specify ground truth for each question
-groundtruth = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ,1,1,1,1,1,1,1, 2,2,2,2, 3,3,3,3, 4,4,4,4,4,4,4, 5,5, 6] #25 none, 7 gun, 4 knife, 4 wrench, 7 pliers, 2 scissors, 1 hammer
-
+groundtruth = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 2,2,2,2, 1,1,1, 2, 3, 5] #40 none, 5 knife, 3 gun, 1 wrench, 1 scissor
 #honeypots (indexed starting at 0)
 honeypots = [2,3,14,15]
 
