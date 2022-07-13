@@ -64,9 +64,7 @@ function renderQuestion(userID, sequence, duration) {
 
     if (duration > 0) {
         drawCanvas(exercise_img_src);
-
-        document.getElementById("img2find").src = obj_img;
-        document.getElementById("img2find").width = "200"
+        console.log(duration);
     } else {
         document.getElementById("canvas").style.visibility = "hidden";
         document.getElementById("imgText").innerHTML = "Times up! Submit your answer.";
@@ -80,7 +78,8 @@ function renderQuestion(userID, sequence, duration) {
     //
     //Button
     //
-    d3.select(".btn-outline-success").on("click", function () {
+
+    d3.select("submitButton").on("click", function () {
       console.log("BUTTON PRESSED");
         var q1 = [];
 

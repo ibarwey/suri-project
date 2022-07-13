@@ -8,7 +8,7 @@ const { response } = require('express');
 var url = 'mongodb://0.0.0.0:27017/'; //for server tests
 //var url = 'mongodb://localhost:27014/'; //for local tests
 
-var datab = 'InternalTest'
+var datab = 'suri-project'
 var userID = null;
 let users = [];
 var totalQs = 50;
@@ -52,11 +52,20 @@ router.post('/activity/', function(req,res,next){
    let usersCol = db.collection('users')
    check = yield usersCol.findOne({"user" : currentUser.id})
 
-   //check to see if user exists in database
-   if(check != null && currentUser.id != null){
+   if(check === null) {
+      var item = {
+        "user": currentUser.id,
+        "key2pay": null,
+        "surveyResults": null,
+        "score": null
+      };
+
+      usersCol.insertOne(item);
+
+      res.render('activity', {time: 30, userID: currentUser.id, question: questionNum, sequence: currentUser.index})
+   }
+   else {
      res.render('index', {error: "ERROR: Already completed activity!"})
-   }else{
-     res.render('activity', {time: 30, userID: currentUser.id, question: questionNum, sequence: currentUser.index})
    }
 
  });
@@ -79,22 +88,19 @@ router.post('/activity/:userID/', function(req,res,next){
   let currentUser = getUserInstance(req.params.userID);
   prevTime = currentUser.getPrevTime();
 
-
   //check to ensure previous response was posted
   co(function* () {
 
-
     yield snooze(1000)
 
-
-    let client = yield MongoClient.connect(url);
+    let client = yield MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
     const db = client.db(datab)
     let responseCol = db.collection('responses')
     let usersCol = db.collection('users')
 
     check = yield responseCol.findOne({"user" : currentUser.id, "question" : currentUser.currentQ()})
 
-    if (check == null){
+    /*if (check == null){
 
 
       res.render('activity',
@@ -106,7 +112,7 @@ router.post('/activity/:userID/', function(req,res,next){
       })
 
 
-    }else{
+    }else{*/
 
 
       currentUser.nextquestion()
@@ -120,6 +126,7 @@ router.post('/activity/:userID/', function(req,res,next){
       else{
         //change Ground Truth Array
           var correct = []
+          var truth = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 2,2,2,2, 1,1,1, 2, 3, 5]; //40 none, 5 knife, 3 gun, 1 wrench, 1 scissor
 
 
         //get results
@@ -136,7 +143,7 @@ router.post('/activity/:userID/', function(req,res,next){
           } else{
             correct.push(0)
           }
-        }
+        //}
 
 
         var sum = 0
